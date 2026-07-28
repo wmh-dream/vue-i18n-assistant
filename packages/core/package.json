@@ -1,0 +1,8 @@
+{
+  "name": "@assistant/core",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts"
+  }
+}
