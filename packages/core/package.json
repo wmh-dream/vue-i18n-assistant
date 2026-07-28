@@ -4,5 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@vue/compiler-sfc": "^3.5.40"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.1"
   }
 }

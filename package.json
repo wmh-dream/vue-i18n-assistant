@@ -1,7 +1,6 @@
 {
   "name": "vue-i18n-assistant",
   "private": true,
-  "packageManager": "pnpm@10",
   "scripts": {
     "dev": "echo Root Workspace"
   }
