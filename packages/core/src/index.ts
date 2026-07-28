@@ -1,28 +1,33 @@
 import { parseVue } from "./parser/vueParser";
+import { convertTemplate } from "./converter/templateConverter";
 
 const code = `
 <template>
-  <div>你好</div>
+  <div>提交</div>
 
-  <el-button>提交</el-button>
+  <el-button>保存</el-button>
+
+  <div>123</div>
+
+  <div>abc</div>
+
+  <span>{{ name }}</span>
+
+  <div>审核通过</div>
 </template>
 
 <script setup lang="ts">
 const name = "张三"
-
-const arr = [
-  "待审核",
-  "已完成"
-]
 </script>
-
-<style scoped>
-.red{
-    color:red;
-}
-</style>
 `;
 
-const result = parseVue(code);
+const sfc = parseVue(code);
 
-console.log(result);
+if (!sfc.template) {
+  throw new Error("Template 不存在");
+}
+
+const newTemplate = convertTemplate(sfc.template);
+
+console.log("转换后：");
+console.log(newTemplate);
