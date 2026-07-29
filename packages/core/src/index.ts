@@ -14,6 +14,8 @@ const code = `
   <span>{{ name }}</span>
 
   <div>审核通过</div>
+
+  <div>  带空白的中文  </div>
 </template>
 
 <script setup lang="ts">
