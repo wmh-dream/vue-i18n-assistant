@@ -7,6 +7,7 @@ import {
   type InterpolationNode,
 } from "@vue/compiler-dom";
 import { findChineseRanges } from "../utils";
+import { analyzeAttributes } from "./attributes";
 import type { ChineseSnippet } from "../types";
 
 /**
@@ -14,9 +15,10 @@ import type { ChineseSnippet } from "../types";
  *
  * 设计要点:
  * - 只负责「找出中文及其精确位置」,不生成替换文本(generator 职责)。
- * - TextNode 内部可能含多个中文片段(如 "提交xxx保存"),
- *   用 findChineseRanges 枚举每段连续中文,逐段输出 snippet,
+ * - TextNode:用 findChineseRanges 枚举每段连续中文,逐段输出 snippet,
  *   精确指向中文本身,不触碰前后空白。
+ * - ElementNode:除了递归 children,还分析 props 中的静态属性(白名单),
+ *   由 analyzeAttributes 独立模块承担,collectChinese 只做组织。
  * - source 固定为 'template':analyzer 输出局部坐标 + 源标识,
  *   全局换算由 converter 负责。
  */
@@ -40,6 +42,8 @@ export function collectChinese(root: RootNode): ChineseSnippet[] {
   }
 
   function visitElement(node: ElementNode) {
+    // 属性分析与子节点遍历是并行的两个维度,互不依赖
+    result.push(...analyzeAttributes(node));
     node.children.forEach(visit);
   }
 
@@ -68,3 +72,4 @@ export function collectChinese(root: RootNode): ChineseSnippet[] {
 
   return result;
 }
+
