@@ -3,8 +3,8 @@ import {
   type AttributeNode,
   type ElementNode,
 } from "@vue/compiler-dom";
-import { containsChinese } from "../utils";
-import type { ChineseAttributeSnippet } from "../types";
+import { containsChinese } from "../utils/index.js";
+import type { ChineseAttributeSnippet } from "../types/index.js";
 
 /**
  * 需要做 i18n 的属性白名单。
@@ -55,7 +55,7 @@ export function analyzeAttributes(
     if (!I18N_ATTRIBUTE_NAMES.has(name)) continue;
 
     // 静态属性值必为 TextNode 或 null(无值属性如 disabled)
-    if (attr.value === null) continue;
+    if (attr.value === null || attr.value === undefined) continue;
     if (attr.value.type !== NodeTypes.TEXT) continue;
 
     const value = attr.value.content;

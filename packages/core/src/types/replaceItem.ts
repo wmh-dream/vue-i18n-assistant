@@ -1,4 +1,4 @@
-import type { SourceType } from "./source";
+import type { SourceType } from "./source.js";
 
 /**
  * Generator 的产物,Transformer 的输入。

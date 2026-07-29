@@ -6,9 +6,9 @@ import {
   type TextNode,
   type InterpolationNode,
 } from "@vue/compiler-dom";
-import { findChineseRanges } from "../utils";
-import { analyzeAttributes } from "./attributes";
-import type { ChineseSnippet } from "../types";
+import { findChineseRanges } from "../utils/index.js";
+import { analyzeAttributes } from "./attributes.js";
+import type { ChineseSnippet } from "../types/index.js";
 
 /**
  * Analyzer:遍历 Template AST,产出 ChineseSnippet 列表。

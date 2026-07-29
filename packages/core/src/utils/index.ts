@@ -3,8 +3,8 @@ export {
   findChineseRanges,
   containsChinese,
   type ChineseRange,
-} from "./chinese";
+} from "./chinese.js";
 
-export { printAST } from "./printAST";
+export { printAST } from "./printAST.js";
 
-export { shiftReplaceItems } from "./offset";
+export { shiftReplaceItems } from "./offset.js";

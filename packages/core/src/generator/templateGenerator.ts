@@ -3,7 +3,7 @@ import type {
   ChineseTextSnippet,
   ChineseAttributeSnippet,
   ReplaceItem,
-} from "../types";
+} from "../types/index.js";
 
 /**
  * Generator:将 ChineseSnippet 转换为 ReplaceItem。

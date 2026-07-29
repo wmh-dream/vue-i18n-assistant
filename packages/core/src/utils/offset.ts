@@ -1,4 +1,4 @@
-import type { ReplaceItem } from "../types";
+import type { ReplaceItem } from "../types/index.js";
 
 /**
  * 坐标换算工具:将局部偏移的 ReplaceItem 平移到全局坐标。

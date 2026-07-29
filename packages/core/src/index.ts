@@ -1,89 +1,56 @@
-import { parseVue } from "./parser/vueParser";
-import { convertTemplate } from "./converter/templateConverter";
-import { convertScript } from "./converter/scriptConverter";
-import { convertVue } from "./converter/vueConverter";
+/**
+ * @assistant/core 包出口。
+ *
+ * 设计要点:
+ * - 只做 re-export,不含任何业务/demo 代码,便于被 packages/vscode、
+ *   packages/cli 等消费方稳定 import。
+ * - 按职责分组导出,调用方按需引入。
+ */
 
-const code = `
-<template>
-  <div>提交</div>
+// Parser:解析 SFC / Template
+export { parseVue, parseVueDescriptor } from "./parser/vueParser.js";
+export type {
+  VueSFCResult,
+  VueSFCDescriptorResult,
+  SFCBlockWithOffset,
+} from "./parser/vueParser.js";
+export { parseTemplate } from "./parser/templateParser.js";
+export { parseScript } from "./parser/scriptParser.js";
 
-  <el-button>保存</el-button>
+// Analyzer:识别中文位置
+export { collectChinese } from "./analyzer/collectChinese.js";
+export { analyzeAttributes } from "./analyzer/attributes.js";
+export { analyzeScript } from "./analyzer/scriptAnalyzer.js";
 
-  <div>123</div>
+// Generator:生成 ReplaceItem
+export { buildTemplateReplace } from "./generator/templateGenerator.js";
+export { buildScriptReplace } from "./generator/scriptGenerator.js";
 
-  <div>abc</div>
+// Transformer:修改源码
+export { applyReplace } from "./transformer/wrapText.js";
 
-  <span>{{ name }}</span>
+// Converter:组织 pipeline
+export { convertTemplate } from "./converter/templateConverter.js";
+export { convertScript } from "./converter/scriptConverter.js";
+export { convertVue } from "./converter/vueConverter.js";
 
-  <div>审核通过</div>
+// Types
+export type {
+  SourceType,
+  ChineseCase,
+  ChineseSnippet,
+  ChineseTextSnippet,
+  ChineseAttributeSnippet,
+  ChineseScriptLiteralSnippet,
+  ReplaceItem,
+} from "./types/index.js";
 
-  <div>  带空白的中文  </div>
-
-  <el-input placeholder="请输入姓名" />
-
-  <el-table empty-text="暂无数据" />
-
-  <img alt="头像" />
-
-  <div class="容器" data-tip="提示">白名单外属性不应被改</div>
-</template>
-
-<script setup lang="ts">
-import { ElMessage } from "element-plus"
-import { useI18n } from "vue-i18n"
-
-const { t: $t } = useI18n()
-
-const msg = "提交"
-
-const name = "张三"
-
-const arr = ["保存", "取消"]
-
-const config = {
-  title: "用户管理",
-  success: "操作成功",
-  "中文key": "不应被翻译的value"
-}
-
-ElMessage.success("保存成功")
-
-throw new Error("失败")
-
-const tpl = \`模板中文\`
-
-const nested = \`前缀\${name}后缀\`
-
-export const exported = "导出的文案"
-
-export { reExport } from "./other"
-</script>
-
-<script lang="ts">
-const normalScript = "普通script块的中文"
-</script>
-
-<style scoped>
-.container {
-  color: red;
-  /* 注释中的中文不应被改 */
-}
-</style>
-
-<docs>
-这是文档自定义块,不应被改
-</docs>
-`;
-
-console.log("=== convertVue(整段 SFC) ===");
-console.log(convertVue(code));
-
-// 验证原有 API 仍然可用
-console.log("\n=== 兼容性验证:convertTemplate / convertScript 仍可用 ===");
-const sfc = parseVue(code);
-if (sfc.template) {
-  console.log("(convertTemplate 仍可用,仅处理 template 内容)");
-}
-if (sfc.scriptSetup) {
-  console.log("(convertScript 仍可用,仅处理 script 内容)");
-}
+// Utils
+export {
+  CHINESE_RANGE_REGEX,
+  findChineseRanges,
+  containsChinese,
+  shiftReplaceItems,
+  printAST,
+  type ChineseRange,
+} from "./utils/index.js";

@@ -1,5 +1,5 @@
 import MagicString from "magic-string";
-import type { ReplaceItem } from "../types";
+import type { ReplaceItem } from "../types/index.js";
 
 export function applyReplace(code: string, items: ReplaceItem[]) {
   const s = new MagicString(code);

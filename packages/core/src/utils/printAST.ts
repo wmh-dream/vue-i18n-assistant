@@ -25,7 +25,7 @@ export function printAST(node: TemplateChildNode, depth = 0) {
       break;
 
     case NodeTypes.INTERPOLATION:
-      console.log(`${indent}INTERPOLATION: {{${node.content.content}}}`);
+      console.log(`${indent}INTERPOLATION: {{${(node.content as { content: string }).content}}}`);
       break;
 
     default:

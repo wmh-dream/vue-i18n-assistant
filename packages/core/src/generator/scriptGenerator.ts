@@ -1,7 +1,7 @@
 import type {
   ChineseScriptLiteralSnippet,
   ReplaceItem,
-} from "../types";
+} from "../types/index.js";
 
 /**
  * Generator:将 Script 场景的 ChineseSnippet 转换为 ReplaceItem。

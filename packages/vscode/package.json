@@ -1,0 +1,32 @@
+{
+  "name": "@assistant/vscode",
+  "version": "0.0.1",
+  "description": "Vue 国际化助手 VSCode 扩展",
+  "engines": {
+    "vscode": "^1.89.0"
+  },
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vueI18nAssistant.convertCurrentVueFile",
+        "title": "Vue I18n Assistant: Convert Current Vue File"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./ --noEmit && node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc -p ./ --noEmit",
+    "package": "vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "@assistant/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.89.0",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.4.0"
+  }
+}

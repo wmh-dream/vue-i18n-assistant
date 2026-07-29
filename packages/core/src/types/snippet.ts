@@ -1,4 +1,4 @@
-import type { SourceType } from "./source";
+import type { SourceType } from "./source.js";
 
 /**
  * Analyzer 的产物:一处中文出现位置。

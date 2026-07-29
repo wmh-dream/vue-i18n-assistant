@@ -1,17 +1,16 @@
-import _traverse from "@babel/traverse";
+import _traverse, { type NodePath } from "@babel/traverse";
 import * as t from "@babel/types";
-import { parseScript } from "../parser/scriptParser";
-import { containsChinese } from "../utils";
+import { parseScript } from "../parser/scriptParser.js";
+import { containsChinese } from "../utils/index.js";
 import type {
   ChineseScriptLiteralSnippet,
   ChineseSnippet,
   SourceType,
-} from "../types";
+} from "../types/index.js";
 
 // @babel/traverse 在 CJS/ESM 互操作下默认导出形式不稳定,兼容取值
-const traverse: typeof _traverse =
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (_traverse as any).default ?? _traverse;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const traverse = (_traverse as any).default ?? _traverse;
 
 /**
  * Analyzer:遍历 Babel AST,产出 Script 场景的 ChineseSnippet 列表。
@@ -40,7 +39,7 @@ export function analyzeScript(
   const result: ChineseScriptLiteralSnippet[] = [];
 
   traverse(ast, {
-    StringLiteral(path) {
+    StringLiteral(path: NodePath<t.StringLiteral>) {
       const node = path.node;
       const parent = path.parent;
 
@@ -81,7 +80,7 @@ export function analyzeScript(
       });
     },
 
-    TemplateLiteral(path) {
+    TemplateLiteral(path: NodePath<t.TemplateLiteral>) {
       const node = path.node;
 
       // 带表达式插值的模板字符串暂不处理(i18n 需拆 key,复杂度高)

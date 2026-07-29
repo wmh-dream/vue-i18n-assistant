@@ -1,7 +1,7 @@
-import { parseTemplate } from "../parser/templateParser";
-import { collectChinese } from "../analyzer/collectChinese";
-import { buildTemplateReplace } from "../generator/templateGenerator";
-import { applyReplace } from "../transformer/wrapText";
+import { parseTemplate } from "../parser/templateParser.js";
+import { collectChinese } from "../analyzer/collectChinese.js";
+import { buildTemplateReplace } from "../generator/templateGenerator.js";
+import { applyReplace } from "../transformer/wrapText.js";
 
 export function convertTemplate(template: string) {
   const ast = parseTemplate(template);

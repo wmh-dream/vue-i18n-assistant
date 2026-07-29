@@ -1,18 +1,18 @@
-import { parseVueDescriptor } from "../parser/vueParser";
-import { parseTemplate } from "../parser/templateParser";
-import { collectChinese } from "../analyzer/collectChinese";
-import { analyzeScript } from "../analyzer/scriptAnalyzer";
-import { buildTemplateReplace } from "../generator/templateGenerator";
-import { buildScriptReplace } from "../generator/scriptGenerator";
-import { applyReplace } from "../transformer/wrapText";
-import { shiftReplaceItems } from "../utils";
-import type { ReplaceItem } from "../types";
+import { parseVueDescriptor } from "../parser/vueParser.js";
+import { parseTemplate } from "../parser/templateParser.js";
+import { collectChinese } from "../analyzer/collectChinese.js";
+import { analyzeScript } from "../analyzer/scriptAnalyzer.js";
+import { buildTemplateReplace } from "../generator/templateGenerator.js";
+import { buildScriptReplace } from "../generator/scriptGenerator.js";
+import { applyReplace } from "../transformer/wrapText.js";
+import { shiftReplaceItems } from "../utils/index.js";
+import type { ReplaceItem } from "../types/index.js";
 
 /**
  * 过滤出 script-literal case 的 snippet,供 buildScriptReplace 消费。
  * 提取为内联工具函数,避免在 converter 里重复 type guard 模板。
  */
-function filterScriptLiteral(snippets: import("../types").ChineseSnippet[]) {
+function filterScriptLiteral(snippets: import("../types/index.js").ChineseSnippet[]) {
   return snippets.filter(
     (s): s is Extract<typeof s, { case: "script-literal" }> =>
       s.case === "script-literal"

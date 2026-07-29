@@ -1,7 +1,7 @@
-import { analyzeScript } from "../analyzer/scriptAnalyzer";
-import { buildScriptReplace } from "../generator/scriptGenerator";
-import { applyReplace } from "../transformer/wrapText";
-import type { SourceType } from "../types";
+import { analyzeScript } from "../analyzer/scriptAnalyzer.js";
+import { buildScriptReplace } from "../generator/scriptGenerator.js";
+import { applyReplace } from "../transformer/wrapText.js";
+import type { SourceType } from "../types/index.js";
 
 /**
  * Converter:组织 Script 国际化 pipeline。
