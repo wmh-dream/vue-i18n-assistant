@@ -1,5 +1,6 @@
 import { parseVue } from "./parser/vueParser";
 import { convertTemplate } from "./converter/templateConverter";
+import { convertScript } from "./converter/scriptConverter";
 
 const code = `
 <template>
@@ -27,7 +28,34 @@ const code = `
 </template>
 
 <script setup lang="ts">
+import { ElMessage } from "element-plus"
+import { useI18n } from "vue-i18n"
+
+const { t: $t } = useI18n()
+
+const msg = "提交"
+
 const name = "张三"
+
+const arr = ["保存", "取消"]
+
+const config = {
+  title: "用户管理",
+  success: "操作成功",
+  "中文key": "不应被翻译的value"
+}
+
+ElMessage.success("保存成功")
+
+throw new Error("失败")
+
+const tpl = \`模板中文\`
+
+const nested = \`前缀\${name}后缀\`
+
+export const exported = "导出的文案"
+
+export { reExport } from "./other"
 </script>
 `;
 
@@ -37,7 +65,15 @@ if (!sfc.template) {
   throw new Error("Template 不存在");
 }
 
-const newTemplate = convertTemplate(sfc.template);
+console.log("=== Template 转换 ===");
+console.log(convertTemplate(sfc.template));
 
-console.log("转换后：");
-console.log(newTemplate);
+if (sfc.scriptSetup) {
+  console.log("\n=== Script Setup 转换 ===");
+  console.log(convertScript(sfc.scriptSetup, "scriptSetup"));
+}
+
+if (sfc.script) {
+  console.log("\n=== Script 转换 ===");
+  console.log(convertScript(sfc.script, "script"));
+}
