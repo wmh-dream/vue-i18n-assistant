@@ -2,8 +2,10 @@ import type {
   ChineseSnippet,
   ChineseTextSnippet,
   ChineseAttributeSnippet,
+  ChineseScriptLiteralSnippet,
   ReplaceItem,
 } from "../types/index.js";
+import { buildScriptReplace } from "./scriptGenerator.js";
 
 /**
  * Generator:将 ChineseSnippet 转换为 ReplaceItem。
@@ -14,8 +16,10 @@ import type {
  * - text: TextNode 中文片段包成 {{ $t('...') }}
  * - attribute: 整个属性节点替换为 :attr="$t('...')"
  *   (必须覆盖属性名+等号+值,才能在属性名前加 `:`,否则 $t 会被当字符串字面量)
+ * - script-literal: Interpolation {{ }} 内部的中文字面量,委托
+ *   buildScriptReplace 生成 $t('...')(与 <script> 块字面量替换形态一致)
  *
- * 后续新增 interpolation 等场景,在此追加 case 分支,analyzer/transformer 无需改动。
+ * 后续新增场景,在此追加 case 分支,analyzer/transformer 无需改动。
  */
 export function buildTemplateReplace(list: ChineseSnippet[]): ReplaceItem[] {
   const result: ReplaceItem[] = [];
@@ -28,6 +32,10 @@ export function buildTemplateReplace(list: ChineseSnippet[]): ReplaceItem[] {
 
       case "attribute":
         result.push(buildAttributeReplace(snippet));
+        break;
+
+      case "script-literal":
+        result.push(...buildScriptReplace([snippet]));
         break;
     }
   }

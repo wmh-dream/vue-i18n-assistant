@@ -25,15 +25,17 @@ const traverse = (_traverse as any).default ?? _traverse;
  * - 跳过 import/export 的模块路径:这些是模块标识,不是 UI 文案。
  * - 跳过对象 key:只翻译 value,不翻译 key(对象 key 是标识符语义)。
  * - 变量名是 Identifier,非字面量,天然不会被收集。
+ * - source 参数接受任意 SourceType:本函数只产出 snippet,source 透传。
+ *   调用方传 'template' 可复用此函数分析 Interpolation 内部 JS 表达式。
  *
  * 不使用正则:全程遍历 AST,通过节点类型与 parentPath 判定上下文。
  *
- * @param code <script> 块源码字符串
+ * @param code <script> 块或 Interpolation 表达式源码字符串
  * @param source 标识来自哪个 SFC 块,用于 transformer 坐标换算
  */
 export function analyzeScript(
   code: string,
-  source: Extract<SourceType, "script" | "scriptSetup">
+  source: SourceType
 ): ChineseSnippet[] {
   const ast = parseScript(code);
   const result: ChineseScriptLiteralSnippet[] = [];

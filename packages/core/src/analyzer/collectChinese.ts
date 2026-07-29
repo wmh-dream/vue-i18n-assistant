@@ -8,6 +8,7 @@ import {
 } from "@vue/compiler-dom";
 import { findChineseRanges } from "../utils/index.js";
 import { analyzeAttributes } from "./attributes.js";
+import { analyzeInterpolation } from "./interpolationAnalyzer.js";
 import type { ChineseSnippet } from "../types/index.js";
 
 /**
@@ -19,6 +20,8 @@ import type { ChineseSnippet } from "../types/index.js";
  *   精确指向中文本身,不触碰前后空白。
  * - ElementNode:除了递归 children,还分析 props 中的静态属性(白名单),
  *   由 analyzeAttributes 独立模块承担,collectChinese 只做组织。
+ * - InterpolationNode:委托 analyzeInterpolation,复用 script analyzer
+ *   解析 {{ }} 内部 JS 表达式中的中文字面量(如三元运算中的字符串)。
  * - source 固定为 'template':analyzer 输出局部坐标 + 源标识,
  *   全局换算由 converter 负责。
  */
@@ -64,8 +67,8 @@ export function collectChinese(root: RootNode): ChineseSnippet[] {
     }
   }
 
-  function visitInterpolation(_node: InterpolationNode) {
-    // 预留:{{ }} 表达式中的中文字符串字面量,后续实现
+  function visitInterpolation(node: InterpolationNode) {
+    result.push(...analyzeInterpolation(node));
   }
 
   root.children.forEach(visit);

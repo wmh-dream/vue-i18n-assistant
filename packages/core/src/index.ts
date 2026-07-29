@@ -20,6 +20,7 @@ export { parseScript } from "./parser/scriptParser.js";
 // Analyzer:识别中文位置
 export { collectChinese } from "./analyzer/collectChinese.js";
 export { analyzeAttributes } from "./analyzer/attributes.js";
+export { analyzeInterpolation } from "./analyzer/interpolationAnalyzer.js";
 export { analyzeScript } from "./analyzer/scriptAnalyzer.js";
 
 // Generator:生成 ReplaceItem

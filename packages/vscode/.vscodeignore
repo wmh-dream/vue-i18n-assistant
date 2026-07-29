@@ -1,0 +1,7 @@
+# 开发配置与源码,打包时排除
+.vscode/**
+src/**
+tsconfig.json
+esbuild.mjs
+**/*.map
+.gitignore

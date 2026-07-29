@@ -1,10 +1,13 @@
 {
-  "name": "@assistant/vscode",
+  "name": "vue-i18n-assistant",
+  "displayName": "Vue I18n Assistant",
   "version": "0.0.1",
-  "description": "Vue 国际化助手 VSCode 扩展",
+  "description": "Vue 国际化助手:一键提取 Vue SFC 中的中文到 i18n 调用",
+  "publisher": "assistant",
   "engines": {
     "vscode": "^1.89.0"
   },
+  "categories": ["Other"],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -21,7 +24,8 @@
     "package": "vsce package --no-dependencies"
   },
   "dependencies": {
-    "@assistant/core": "workspace:*"
+    "@assistant/core": "workspace:*",
+    "@vue/compiler-sfc": "^3.5.40"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

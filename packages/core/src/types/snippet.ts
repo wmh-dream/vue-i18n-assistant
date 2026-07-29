@@ -29,7 +29,9 @@ export interface ChineseAttributeSnippet {
 }
 
 export interface ChineseScriptLiteralSnippet {
-  source: SourceType; // 'script' | 'scriptSetup'
+  // 'script' | 'scriptSetup':<script> 块字面量
+  // 'template':Interpolation {{ }} 内部的 JS 表达式字面量,复用 script analyzer
+  source: SourceType;
   case: "script-literal";
   kind: "string" | "template"; // 普通字符串字面量 / 模板字面量
   text: string; // 字面量的原始文本内容(不含引号/反引号),作为 i18n key
