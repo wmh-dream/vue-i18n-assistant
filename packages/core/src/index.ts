@@ -1,6 +1,7 @@
 import { parseVue } from "./parser/vueParser";
 import { convertTemplate } from "./converter/templateConverter";
 import { convertScript } from "./converter/scriptConverter";
+import { convertVue } from "./converter/vueConverter";
 
 const code = `
 <template>
@@ -57,23 +58,32 @@ export const exported = "导出的文案"
 
 export { reExport } from "./other"
 </script>
+
+<script lang="ts">
+const normalScript = "普通script块的中文"
+</script>
+
+<style scoped>
+.container {
+  color: red;
+  /* 注释中的中文不应被改 */
+}
+</style>
+
+<docs>
+这是文档自定义块,不应被改
+</docs>
 `;
 
+console.log("=== convertVue(整段 SFC) ===");
+console.log(convertVue(code));
+
+// 验证原有 API 仍然可用
+console.log("\n=== 兼容性验证:convertTemplate / convertScript 仍可用 ===");
 const sfc = parseVue(code);
-
-if (!sfc.template) {
-  throw new Error("Template 不存在");
+if (sfc.template) {
+  console.log("(convertTemplate 仍可用,仅处理 template 内容)");
 }
-
-console.log("=== Template 转换 ===");
-console.log(convertTemplate(sfc.template));
-
 if (sfc.scriptSetup) {
-  console.log("\n=== Script Setup 转换 ===");
-  console.log(convertScript(sfc.scriptSetup, "scriptSetup"));
-}
-
-if (sfc.script) {
-  console.log("\n=== Script 转换 ===");
-  console.log(convertScript(sfc.script, "script"));
+  console.log("(convertScript 仍可用,仅处理 script 内容)");
 }

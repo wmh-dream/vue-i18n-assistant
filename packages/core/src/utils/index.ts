@@ -6,3 +6,5 @@ export {
 } from "./chinese";
 
 export { printAST } from "./printAST";
+
+export { shiftReplaceItems } from "./offset";
