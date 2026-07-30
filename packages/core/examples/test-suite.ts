@@ -91,15 +91,45 @@ const cases: Case[] = [
     fn: convertVue,
   },
   {
-    name: "白名单外属性不翻译",
-    input: `<template><div class="容器" data-tip="提示">x</div></template>`,
-    expected: `<template><div class="容器" data-tip="提示">x</div></template>`,
+    name: "含中文静态属性都翻译(无白名单)",
+    input: `<template><div data-tip="提示" text="标题">x</div></template>`,
+    expected: `<template><div :data-tip="$t('提示')" :text="$t('标题')">x</div></template>`,
     fn: convertVue,
   },
   {
-    name: "动态属性不翻译(已绑定)",
+    name: "纯英文静态属性不翻译",
+    input: `<template><div class="container" data-tip="hint">x</div></template>`,
+    expected: `<template><div class="container" data-tip="hint">x</div></template>`,
+    fn: convertVue,
+  },
+  {
+    name: "动态属性不翻译(已绑定,无中文字面量)",
     input: `<template><el-input :placeholder="msg" /></template>`,
     expected: `<template><el-input :placeholder="msg" /></template>`,
+    fn: convertVue,
+  },
+  {
+    name: "v-bind 对象字面量内中文 value 翻译",
+    input: `<template><TrainCard :data="{ status: '进行中' }" /></template>`,
+    expected: `<template><TrainCard :data="{ status: $t('进行中') }" /></template>`,
+    fn: convertVue,
+  },
+  {
+    name: "v-bind 对象字面量 key 不翻译",
+    input: `<template><Comp :map="{ '姓名': '名称', 年龄: 18 }" /></template>`,
+    expected: `<template><Comp :map="{ '姓名': $t('名称'), 年龄: 18 }" /></template>`,
+    fn: convertVue,
+  },
+  {
+    name: "v-bind 字符串拼接翻译",
+    input: `<template><div :title="'提示' + msg" /></template>`,
+    expected: `<template><div :title="$t('提示') + msg" /></template>`,
+    fn: convertVue,
+  },
+  {
+    name: "v-bind 已有 $t 幂等",
+    input: `<template><div :data="{ status: $t('进行中') }" /></template>`,
+    expected: `<template><div :data="{ status: $t('进行中') }" /></template>`,
     fn: convertVue,
   },
 
@@ -317,7 +347,12 @@ const cases: Case[] = [
 // 运行
 let pass = 0;
 let fail = 0;
-const failures: { name: string; input: string; expected: string; actual: string }[] = [];
+const failures: {
+  name: string;
+  input: string;
+  expected: string;
+  actual: string;
+}[] = [];
 
 for (const c of cases) {
   let actual: string;
@@ -331,7 +366,12 @@ for (const c of cases) {
     pass++;
   } else {
     fail++;
-    failures.push({ name: c.name, input: c.input, expected: c.expected, actual });
+    failures.push({
+      name: c.name,
+      input: c.input,
+      expected: c.expected,
+      actual,
+    });
   }
 }
 

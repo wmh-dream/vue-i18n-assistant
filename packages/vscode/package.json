@@ -7,7 +7,9 @@
   "engines": {
     "vscode": "^1.89.0"
   },
-  "categories": ["Other"],
+  "categories": [
+    "Other"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -30,6 +32,7 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.89.0",
+    "@vscode/vsce": "^2.32.0",
     "esbuild": "^0.23.0",
     "typescript": "^5.4.0"
   }

@@ -8,6 +8,7 @@ import {
 } from "@vue/compiler-dom";
 import { findChineseRanges } from "../utils/index.js";
 import { analyzeAttributes } from "./attributes.js";
+import { analyzeDirectives } from "./directiveAnalyzer.js";
 import { analyzeInterpolation } from "./interpolationAnalyzer.js";
 import type { ChineseSnippet } from "../types/index.js";
 
@@ -45,8 +46,9 @@ export function collectChinese(root: RootNode): ChineseSnippet[] {
   }
 
   function visitElement(node: ElementNode) {
-    // 属性分析与子节点遍历是并行的两个维度,互不依赖
+    // 属性分析(静态属性 + v-bind 指令)与子节点遍历是并行的维度,互不依赖
     result.push(...analyzeAttributes(node));
+    result.push(...analyzeDirectives(node));
     node.children.forEach(visit);
   }
 
@@ -75,4 +77,3 @@ export function collectChinese(root: RootNode): ChineseSnippet[] {
 
   return result;
 }
-

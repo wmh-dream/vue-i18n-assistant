@@ -1,7 +1,15 @@
 {
-  "name": "vue-i18n-assistant",
+  "name": "vue-i18n-assistant-root",
   "private": true,
   "scripts": {
     "dev": "echo Root Workspace"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^2.32.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "undici": "6.21.3"
+    }
   }
 }
