@@ -8,3 +8,5 @@ export {
 export { printAST } from "./printAST.js";
 
 export { shiftReplaceItems } from "./offset.js";
+
+export { isI18nCall } from "./i18nCall.js";

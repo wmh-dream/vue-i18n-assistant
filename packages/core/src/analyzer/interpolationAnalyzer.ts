@@ -6,7 +6,7 @@ import {
   type InterpolationNode,
   type SimpleExpressionNode,
 } from "@vue/compiler-dom";
-import { containsChinese } from "../utils/index.js";
+import { containsChinese, isI18nCall } from "../utils/index.js";
 import type {
   ChineseScriptLiteralSnippet,
   ChineseSnippet,
@@ -82,6 +82,11 @@ export function analyzeInterpolation(
         parent.key === node &&
         !parent.computed
       ) {
+        return;
+      }
+
+      // 跳过 i18n 调用参数:避免对 $t('xxx') 重复包裹,保证幂等性
+      if (t.isCallExpression(parent) && isI18nCall(parent.callee)) {
         return;
       }
 

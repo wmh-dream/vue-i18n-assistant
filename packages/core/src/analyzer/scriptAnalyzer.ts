@@ -1,7 +1,7 @@
 import _traverse, { type NodePath } from "@babel/traverse";
 import * as t from "@babel/types";
 import { parseScript } from "../parser/scriptParser.js";
-import { containsChinese } from "../utils/index.js";
+import { containsChinese, isI18nCall } from "../utils/index.js";
 import type {
   ChineseScriptLiteralSnippet,
   ChineseSnippet,
@@ -67,6 +67,11 @@ export function analyzeScript(
         (t.isExportNamedDeclaration(parent) && parent.source === node) ||
         (t.isExportAllDeclaration(parent) && parent.source === node)
       ) {
+        return;
+      }
+
+      // 跳过 i18n 调用参数:避免对 $t('xxx') 重复包裹,保证幂等性
+      if (t.isCallExpression(parent) && isI18nCall(parent.callee)) {
         return;
       }
 

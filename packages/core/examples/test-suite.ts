@@ -274,6 +274,44 @@ const cases: Case[] = [
     expected: `const msg = $t('提交')`,
     fn: convertScript,
   },
+
+  // ========== 幂等性(已翻译内容不重复包裹)==========
+  {
+    name: "Interpolation 内 $t 不重复包裹",
+    input: `<template><div>{{ $t('时间') }}</div></template>`,
+    expected: `<template><div>{{ $t('时间') }}</div></template>`,
+    fn: convertVue,
+  },
+  {
+    name: "混合 $t 与插值不重复包裹",
+    input: `<template><div>{{ $t('时间') }}:{{ value }}</div></template>`,
+    expected: `<template><div>{{ $t('时间') }}:{{ value }}</div></template>`,
+    fn: convertVue,
+  },
+  {
+    name: "Script $t 赋值不重复包裹",
+    input: `<script>const x = $t('提交')</script>`,
+    expected: `<script>const x = $t('提交')</script>`,
+    fn: convertVue,
+  },
+  {
+    name: "$t 作为函数参数不重复包裹",
+    input: `<script>ElMessage.success($t('保存成功'))</script>`,
+    expected: `<script>ElMessage.success($t('保存成功'))</script>`,
+    fn: convertVue,
+  },
+  {
+    name: "t() 调用不重复包裹",
+    input: `<template><div>{{ t('查看') }}</div></template>`,
+    expected: `<template><div>{{ t('查看') }}</div></template>`,
+    fn: convertVue,
+  },
+  {
+    name: "i18n.t() 调用不重复包裹",
+    input: `<template><div>{{ i18n.t('查看') }}</div></template>`,
+    expected: `<template><div>{{ i18n.t('查看') }}</div></template>`,
+    fn: convertVue,
+  },
 ];
 
 // 运行
